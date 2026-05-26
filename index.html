@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafolio | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* --- VARIABLES DE ESTILO (Fácil de editar) --- */
         :root {
@@ -121,13 +122,43 @@
             object-fit: cover;
         }
 
-        /* --- PIE DE PÁGINA --- */
+        /* --- PIE DE PÁGINA (ESTILOS NUEVOS) --- */
         footer {
             margin-top: 80px;
+            padding: 30px 20px;
+            width: 100%;
+            max-width: 900px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .social-icon {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.6rem;
+            transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.6), 0 0 20px rgba(0, 255, 204, 0.4);
+        }
+
+        .footer-text {
             color: rgba(255, 255, 255, 0.3);
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            text-align: center;
         }
     </style>
 </head>
@@ -173,10 +204,35 @@
             </div>
         </article>
 
-        </main>
+    </main>
 
     <footer>
-        <p>© 2026 // Desarrollado con estilo minimalista de videojuegos</p>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/matias-rodriguez-2908a0262?utm_source=share_via&utm_content=profile&utm_medium=member_android" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="social-icon" 
+               title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+
+            <a href="https://x.com/Bluegamer89" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="social-icon" 
+               title="Twitter / X">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+            <a href="https://www.instagram.com/matichi._89?igsh=MXhzNWh3OTk0dHB5aQ==" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="social-icon" 
+               title="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+        </div>
+        <p class="footer-text">© 2026 // Desarrollado con estilo minimalista de videojuegos</p>
     </footer>
 
 </body>
