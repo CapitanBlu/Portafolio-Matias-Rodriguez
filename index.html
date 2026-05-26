@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio | Portfolio</title>
+    <style>
+        /* --- VARIABLES DE ESTILO (Fácil de editar) --- */
+        :root {
+            --bg-color: #0b0c10;       /* Fondo oscuro profundo */
+            --card-bg: #1f2833;        /* Fondo de los proyectos */
+            --text-main: #f5f5f5;      /* Texto principal */
+            --text-muted: #c5a1ff;     /* Texto secundario / Info */
+            --accent: #00ffcc;         /* Verde neón/Cian estilo videojuego */
+            --border-glow: #1a1a24;    /* Borde sutil */
+        }
+
+        /* --- ESTILOS GENERALES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- ENCABEZADO DE LA PÁGINA --- */
+        header {
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 60px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+
+        header p {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .portfolio-container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 50px; /* Espacio entre proyectos */
+        }
+
+        /* --- ESTRUCTURA DE CADA PROYECTO (Loop) --- */
+        .project-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Efecto hover sutil estilo juego */
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        /* #TITULO */
+        .project-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
+        }
+
+        /* #INFO */
+        .project-info {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            padding-left: 19px;
+            text-align: justify;
+        }
+
+        /* #FOTO / VIDEO */
+        .project-media {
+            width: 100%;
+            border-radius: 6px;
+            overflow: hidden;
+            background-color: #000;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Ajuste para que las imágenes y videos sean responsivos */
+        .project-media img, 
+        .project-media video {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* --- PIE DE PÁGINA --- */
+        footer {
+            margin-top: 80px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PROYECTOS</h1>
+        <p>Showcase / Portafolio de Creaciones</p>
+    </header>
+
+    <main class="portfolio-container">
+
+        <article class="project-card">
+            <h2 class="project-title">Proyecto Alpha: Nombre de la Obra</h2>
+            <div class="project-info">
+                Aquí va la información detallada de la obra. Puedes describir el proceso de software utilizado, el propósito del diseño, la optimización, el texturizado o cualquier detalle técnico relevante para el espectador.
+            </div>
+            <div class="project-media">
+                <video controls loop muted poster="miniatura-video.jpg">
+                    <source src="tu-video.mp4" type="video/mp4">
+                    Tu navegador no soporta el formato de video.
+                </video>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <h2 class="project-title">Proyecto Beta: Render de Personaje</h2>
+            <div class="project-info">
+                Aquí va la información de la segunda obra. Un diseño limpio enfocado en la iluminación y la topología. Estilo oscuro con estética de videojuego moderna, manteniendo la estructura limpia y directa exigida.
+            </div>
+            <div class="project-media">
+                <img src="tu-imagen.jpg" alt="Descripción del Proyecto Beta">
+            </div>
+        </article>
+
+        <article class="project-card">
+            <h2 class="project-title">[Título del Proyecto]</h2>
+            <div class="project-info">
+                [Aquí va la información de la obra, herramientas utilizadas, detalles de rigging, texturas, etc.]
+            </div>
+            <div class="project-media">
+                <img src="tu-imagen-2.jpg" alt="Descripción de la obra">
+            </div>
+        </article>
+
+        </main>
+
+    <footer>
+        <p>© 2026 // Desarrollado con estilo minimalista de videojuegos</p>
+    </footer>
+
+</body>
+</html>
