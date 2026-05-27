@@ -14,7 +14,9 @@
             --text-muted: #c5a1ff;     
             --accent: #00ffcc;         
             --border-glow: #1a1a24;    
-            --like-color: #ff3366;     /* Color rosa/rojo para los likes */
+            --like-color: #ff3366;     
+            --online-color: #00ff66;   /* Verde neón para el en vivo */
+            --views-color: #00bcff;    /* Azul para las visitas */
         }
 
         /* --- ESTILOS GENERALES --- */
@@ -68,25 +70,58 @@
             margin-top: 10px;
         }
 
-        /* Contador General de Likes en el Header */
-        .total-likes-container {
-            margin-top: 15px;
-            font-size: 0.85rem;
+        /* Contenedor de Estadísticas en el Header */
+        .stats-wrapper {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            font-size: 0.8rem;
             color: var(--text-main);
-            background: rgba(255, 51, 102, 0.1);
-            border: 1px solid var(--like-color);
-            padding: 6px 15px;
+            padding: 6px 14px;
             border-radius: 20px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             letter-spacing: 1px;
-            box-shadow: 0 0 10px rgba(255, 51, 102, 0.2);
+            font-weight: bold;
         }
 
-        .total-likes-container i {
-            color: var(--like-color);
-            text-shadow: 0 0 5px var(--like-color);
+        /* Caja Likes */
+        .box-likes {
+            background: rgba(255, 51, 102, 0.08);
+            border: 1px solid var(--like-color);
+            box-shadow: 0 0 10px rgba(255, 51, 102, 0.15);
+        }
+        .box-likes i { color: var(--like-color); }
+
+        /* Caja Visitas */
+        .box-views {
+            background: rgba(0, 188, 255, 0.08);
+            border: 1px solid var(--views-color);
+            box-shadow: 0 0 10px rgba(0, 188, 255, 0.15);
+        }
+        .box-views i { color: var(--views-color); }
+
+        /* Caja En Vivo */
+        .box-online {
+            background: rgba(0, 255, 102, 0.08);
+            border: 1px solid var(--online-color);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.15);
+        }
+        .box-online i { 
+            color: var(--online-color); 
+            animation: pulse 1.8s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 8px var(--online-color); }
+            100% { transform: scale(1); opacity: 0.6; }
         }
 
         /* --- CONTENEDOR PRINCIPAL --- */
@@ -131,7 +166,6 @@
             padding-left: 15px;
         }
 
-        /* Botón de Like Individual */
         .like-btn {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -164,7 +198,6 @@
             transform: scale(1.2);
         }
 
-        /* Cuando el usuario ya le dio click */
         .like-btn.liked {
             background: rgba(255, 51, 102, 0.2);
             border-color: var(--like-color);
@@ -383,9 +416,19 @@
             </a>
         </div>
 
-        <div class="total-likes-container">
-            <i class="fa-solid fa-heart"></i>
-            <span>Likes Totales: <strong id="global-likes-counter">0</strong></span>
+        <div class="stats-wrapper">
+            <div class="stat-box box-likes">
+                <i class="fa-solid fa-heart"></i>
+                <span>Likes: <strong id="global-likes-counter">0</strong></span>
+            </div>
+            <div class="stat-box box-views">
+                <i class="fa-solid fa-eye"></i>
+                <span>Visitas: <strong id="global-views-counter">0</strong></span>
+            </div>
+            <div class="stat-box box-online">
+                <i class="fa-solid fa-circle"></i>
+                <span>En vivo: <strong id="live-online-counter">1</strong></span>
+            </div>
         </div>
     </header>
 
@@ -435,20 +478,78 @@
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = lightbox.querySelector('img');
         const globalCounterEl = document.getElementById('global-likes-counter');
+        const globalViewsEl = document.getElementById('global-views-counter');
+        const liveOnlineEl = document.getElementById('live-online-counter');
 
-        // Configuración de almacenamiento local e ID del espacio
-        const NAMESPACE = "capitanblu_portfolio_2026";
+        const FIREBASE_DB_URL = "https://likes-portafolio-default-rtdb.firebaseio.com";
         const totalLikesMap = {};
 
-        // 1. Cargar datos de proyectos.json
+        // Generar un ID único aleatorio para la sesión de este usuario en vivo
+        const sessionUserId = "user_" + Math.random().toString(36).substring(2, 11);
+
+        function updateGlobalCounter() {
+            let sum = 0;
+            for (const key in totalLikesMap) {
+                sum += totalLikesMap[key];
+            }
+            globalCounterEl.innerText = sum;
+        }
+
+        // --- SISTEMA DE VISITAS Y USUARIOS EN VIVO ---
+        function initTrafficStats() {
+            // 1. Contador de Visitas Totales (Evita duplicar al recargar usando sessionStorage)
+            if (!sessionStorage.getItem('counted_visit')) {
+                fetch(`${FIREBASE_DB_URL}/stats/views.json`)
+                    .then(res => res.json())
+                    .then(currentViews => {
+                        let newViews = (currentViews || 0) + 1;
+                        fetch(`${FIREBASE_DB_URL}/stats/views.json`, {
+                            method: 'PUT',
+                            body: JSON.stringify(newViews)
+                        }).then(() => {
+                            globalViewsEl.innerText = newViews;
+                            sessionStorage.setItem('counted_visit', 'true');
+                        });
+                    });
+            } else {
+                fetch(`${FIREBASE_DB_URL}/stats/views.json`)
+                    .then(res => res.json())
+                    .then(views => { globalViewsEl.innerText = views || 0; });
+            }
+
+            // 2. Contador de Usuarios en Vivo
+            // Registrar presencia actual
+            fetch(`${FIREBASE_DB_URL}/online/${sessionUserId}.json`, {
+                method: 'PUT',
+                body: JSON.stringify(true)
+            });
+
+            // Consultar cuántos usuarios en vivo hay (revisa cada 4 segundos para actualizar dinámicamente)
+            function updateOnlineCount() {
+                fetch(`${FIREBASE_DB_URL}/online.json`)
+                    .then(res => res.json())
+                    .then(onlineUsers => {
+                        let totalOnline = onlineUsers ? Object.keys(onlineUsers).length : 1;
+                        liveOnlineEl.innerText = totalOnline;
+                    }).catch(() => { liveOnlineEl.innerText = 1; });
+            }
+            
+            updateOnlineCount();
+            setInterval(updateOnlineCount, 4000);
+
+            // Borrar registro de presencia cuando el usuario cierra o recarga la página
+            window.addEventListener('beforeunload', () => {
+                navigator.sendBeacon(`${FIREBASE_DB_URL}/online/${sessionUserId}.json`, JSON.stringify(null));
+            });
+        }
+
+        // Cargar proyectos desde proyectos.json
         fetch('proyectos.json')
             .then(response => response.json())
             .then(proyectos => {
                 
                 proyectos.forEach((proy) => {
                     const projectKey = proy.archivo.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-                    
-                    // Comprobar si el usuario actual ya le dio like anteriormente a este proyecto
                     const hasLiked = localStorage.getItem(`liked_${projectKey}`) === 'true';
 
                     const card = document.createElement('article');
@@ -480,11 +581,11 @@
 
                     wrapper.appendChild(card);
 
-                    // Consultar la cantidad de likes en la base de datos externa
-                    fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${projectKey}`)
+                    // Consultar likes de cada obra en Firebase
+                    fetch(`${FIREBASE_DB_URL}/likes/${projectKey}.json`)
                         .then(res => res.json())
-                        .then(data => {
-                            const currentLikes = data.value || 0;
+                        .then(value => {
+                            const currentLikes = value || 0;
                             document.getElementById(`count-${projectKey}`).innerText = currentLikes;
                             totalLikesMap[projectKey] = currentLikes;
                             updateGlobalCounter();
@@ -493,41 +594,38 @@
                             totalLikesMap[projectKey] = 0;
                         });
 
-                    // Sistema interactivo de dar / quitar Like
+                    // Botón de dar / quitar likes
                     const likeBtn = card.querySelector('.like-btn');
                     likeBtn.addEventListener('click', () => {
                         const isLiked = likeBtn.classList.contains('liked');
+                        const currentLikes = totalLikesMap[projectKey] || 0;
+                        let newLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
+                        if (newLikes < 0) newLikes = 0;
 
-                        if (!isLiked) {
-                            // DAR LIKE (+1)
-                            fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${projectKey}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    document.getElementById(`count-${projectKey}`).innerText = data.value;
-                                    likeBtn.classList.add('liked');
-                                    likeBtn.querySelector('i').className = "fa-solid fa-heart";
-                                    localStorage.setItem(`liked_${projectKey}`, 'true');
-                                    totalLikesMap[projectKey] = data.value;
-                                    updateGlobalCounter();
-                                });
-                        } else {
-                            // QUITAR LIKE (-1)
-                            // La API de CountAPI no tiene función de resta nativa directa, por lo que usamos un truco matemático seguro de actualización (-1)
-                            fetch(`https://api.countapi.xyz/update/${NAMESPACE}/${projectKey}?amount=-1`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    document.getElementById(`count-${projectKey}`).innerText = data.value;
-                                    likeBtn.classList.remove('liked');
-                                    likeBtn.querySelector('i').className = "fa-regular fa-heart";
-                                    localStorage.removeItem(`liked_${projectKey}`);
-                                    totalLikesMap[projectKey] = data.value;
-                                    updateGlobalCounter();
-                                });
-                        }
+                        fetch(`${FIREBASE_DB_URL}/likes/${projectKey}.json`, {
+                            method: 'PUT',
+                            body: JSON.stringify(newLikes)
+                        })
+                        .then(res => res.json())
+                        .then(savedValue => {
+                            document.getElementById(`count-${projectKey}`).innerText = savedValue;
+                            totalLikesMap[projectKey] = savedValue;
+                            updateGlobalCounter();
+
+                            if (!isLiked) {
+                                likeBtn.classList.add('liked');
+                                likeBtn.querySelector('i').className = "fa-solid fa-heart";
+                                localStorage.setItem(`liked_${projectKey}`, 'true');
+                            } else {
+                                likeBtn.classList.remove('liked');
+                                likeBtn.querySelector('i').className = "fa-regular fa-heart";
+                                localStorage.removeItem(`liked_${projectKey}`);
+                            }
+                        });
                     });
                 });
 
-                // 2. Activar Lightbox para vistas ampliadas
+                // Activar Lightbox
                 const images = document.querySelectorAll('.project-media img');
                 images.forEach(img => {
                     img.addEventListener('click', () => {
@@ -536,17 +634,11 @@
                         lightbox.classList.add('active');
                     });
                 });
-            })
-            .catch(error => console.error('Error cargando la lista:', error));
 
-        // Refrescar contador global
-        function updateGlobalCounter() {
-            let sum = 0;
-            for (const key in totalLikesMap) {
-                sum += totalLikesMap[key];
-            }
-            globalCounterEl.innerText = sum;
-        }
+                // Inicializar estadísticas de tráfico al cargar todo
+                initTrafficStats();
+            })
+            .catch(error => console.error('Error cargando los proyectos:', error));
 
         lightbox.addEventListener('click', () => {
             lightbox.classList.remove('active');
