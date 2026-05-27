@@ -14,6 +14,7 @@
             --text-muted: #c5a1ff;     
             --accent: #00ffcc;         
             --border-glow: #1a1a24;    
+            --like-color: #ff3366;     /* Color rosa/rojo para los likes */
         }
 
         /* --- ESTILOS GENERALES --- */
@@ -67,6 +68,27 @@
             margin-top: 10px;
         }
 
+        /* Contador General de Likes en el Header */
+        .total-likes-container {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--like-color);
+            padding: 6px 15px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(255, 51, 102, 0.2);
+        }
+
+        .total-likes-container i {
+            color: var(--like-color);
+            text-shadow: 0 0 5px var(--like-color);
+        }
+
         /* --- CONTENEDOR PRINCIPAL --- */
         .portfolio-container {
             width: 100%;
@@ -91,15 +113,63 @@
             border-color: var(--accent);
         }
 
+        .project-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 15px;
+        }
+
         .project-title {
             font-size: 1.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 12px;
             color: var(--text-main);
             border-left: 4px solid var(--accent);
             padding-left: 15px;
+        }
+
+        /* Botón de Like Individual */
+        .like-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .like-btn i {
+            transition: transform 0.2s ease;
+        }
+
+        .like-btn:hover {
+            border-color: var(--like-color);
+            background: rgba(255, 51, 102, 0.05);
+            color: var(--like-color);
+        }
+
+        .like-btn:hover i {
+            transform: scale(1.2);
+        }
+
+        /* Cuando el usuario ya le dio click */
+        .like-btn.liked {
+            background: rgba(255, 51, 102, 0.2);
+            border-color: var(--like-color);
+            color: var(--like-color);
+            box-shadow: 0 0 10px rgba(255, 51, 102, 0.2);
         }
 
         .project-info {
@@ -312,6 +382,11 @@
                 <i class="fa-brands fa-instagram"></i>
             </a>
         </div>
+
+        <div class="total-likes-container">
+            <i class="fa-solid fa-heart"></i>
+            <span>Likes Totales: <strong id="global-likes-counter">0</strong></span>
+        </div>
     </header>
 
     <main class="portfolio-container" id="projects-wrapper">
@@ -330,7 +405,7 @@
             </div>
             <div class="form-group">
                 <label for="message">Detalles del Mensaje / Encargo</label>
-                <textarea id="message" name="mensaje" rows="5" placeholder="Describe el encargo. Si tienes imágenes de referencia, puedes pegar aquí sus enlaces (Imgur, Google Drive, Discord, etc.)..." required></textarea>
+                <textarea id="message" name="mensaje" rows="5" placeholder="Describe el encargo. Si tienes imágenes de referencia, puedes pegar aquí sus enlaces (Imgur, Google Drive, Discord, etc.)...." required></textarea>
             </div>
             <button type="submit" class="submit-btn">Enviar Solicitud</button>
         </form>
@@ -359,13 +434,23 @@
         const wrapper = document.getElementById('projects-wrapper');
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = lightbox.querySelector('img');
+        const globalCounterEl = document.getElementById('global-likes-counter');
 
-        // 1. Cargar datos del archivo proyectos.json
+        // Configuración de almacenamiento local e ID del espacio
+        const NAMESPACE = "capitanblu_portfolio_2026";
+        const totalLikesMap = {};
+
+        // 1. Cargar datos de proyectos.json
         fetch('proyectos.json')
             .then(response => response.json())
             .then(proyectos => {
-                // Renderizar cada proyecto en el HTML
-                proyectos.forEach(proy => {
+                
+                proyectos.forEach((proy) => {
+                    const projectKey = proy.archivo.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                    
+                    // Comprobar si el usuario actual ya le dio like anteriormente a este proyecto
+                    const hasLiked = localStorage.getItem(`liked_${projectKey}`) === 'true';
+
                     const card = document.createElement('article');
                     card.className = 'project-card';
 
@@ -382,15 +467,67 @@
                     }
 
                     card.innerHTML = `
-                        <h2 class="project-title">${proy.titulo}</h2>
+                        <div class="project-header-row">
+                            <h2 class="project-title">${proy.titulo}</h2>
+                            <button class="like-btn ${hasLiked ? 'liked' : ''}" id="btn-${projectKey}">
+                                <i class="${hasLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i> 
+                                <span class="like-count" id="count-${projectKey}">0</span>
+                            </button>
+                        </div>
                         <div class="project-info">${proy.info}</div>
                         <div class="project-media">${mediaHtml}</div>
                     `;
 
                     wrapper.appendChild(card);
+
+                    // Consultar la cantidad de likes en la base de datos externa
+                    fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${projectKey}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            const currentLikes = data.value || 0;
+                            document.getElementById(`count-${projectKey}`).innerText = currentLikes;
+                            totalLikesMap[projectKey] = currentLikes;
+                            updateGlobalCounter();
+                        })
+                        .catch(() => {
+                            totalLikesMap[projectKey] = 0;
+                        });
+
+                    // Sistema interactivo de dar / quitar Like
+                    const likeBtn = card.querySelector('.like-btn');
+                    likeBtn.addEventListener('click', () => {
+                        const isLiked = likeBtn.classList.contains('liked');
+
+                        if (!isLiked) {
+                            // DAR LIKE (+1)
+                            fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${projectKey}`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    document.getElementById(`count-${projectKey}`).innerText = data.value;
+                                    likeBtn.classList.add('liked');
+                                    likeBtn.querySelector('i').className = "fa-solid fa-heart";
+                                    localStorage.setItem(`liked_${projectKey}`, 'true');
+                                    totalLikesMap[projectKey] = data.value;
+                                    updateGlobalCounter();
+                                });
+                        } else {
+                            // QUITAR LIKE (-1)
+                            // La API de CountAPI no tiene función de resta nativa directa, por lo que usamos un truco matemático seguro de actualización (-1)
+                            fetch(`https://api.countapi.xyz/update/${NAMESPACE}/${projectKey}?amount=-1`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    document.getElementById(`count-${projectKey}`).innerText = data.value;
+                                    likeBtn.classList.remove('liked');
+                                    likeBtn.querySelector('i').className = "fa-regular fa-heart";
+                                    localStorage.removeItem(`liked_${projectKey}`);
+                                    totalLikesMap[projectKey] = data.value;
+                                    updateGlobalCounter();
+                                });
+                        }
+                    });
                 });
 
-                // 2. Activar el Lightbox para las imágenes recién creadas
+                // 2. Activar Lightbox para vistas ampliadas
                 const images = document.querySelectorAll('.project-media img');
                 images.forEach(img => {
                     img.addEventListener('click', () => {
@@ -400,9 +537,17 @@
                     });
                 });
             })
-            .catch(error => console.error('Error cargando los proyectos:', error));
+            .catch(error => console.error('Error cargando la lista:', error));
 
-        // 3. Cerrar el lightbox al hacer click fuera
+        // Refrescar contador global
+        function updateGlobalCounter() {
+            let sum = 0;
+            for (const key in totalLikesMap) {
+                sum += totalLikesMap[key];
+            }
+            globalCounterEl.innerText = sum;
+        }
+
         lightbox.addEventListener('click', () => {
             lightbox.classList.remove('active');
             setTimeout(() => { lightboxImg.src = ''; }, 300);
