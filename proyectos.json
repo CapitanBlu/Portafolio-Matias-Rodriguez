@@ -24,6 +24,12 @@
         "archivo": "PersonajeChicle.png"
     },
     {
+        "titulo": "Prueba de modelado,Dinosaurio Zbrush",
+        "info": "trabajo de testeo de modelado, en este caso un Dinosaurio Sculpido en Zbrush.",
+        "tipo": "imagen",
+        "archivo": "Dinosaurio1.png"
+    },
+    {
         "titulo": "[prueba de ambientacion]",
         "info": "[obra creada para mostrar la agilidad en perspectica orthografica, iluminacion y ambientacion]",
         "tipo": "imagen",
