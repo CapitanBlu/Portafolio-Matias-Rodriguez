@@ -6,14 +6,14 @@
     <title>Portafolio | Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* --- VARIABLES DE ESTILO (Fácil de editar) --- */
+        /* --- VARIABLES DE ESTILO --- */
         :root {
-            --bg-color: #0b0c10;       /* Fondo oscuro profundo */
-            --card-bg: #1f2833;        /* Fondo de los proyectos */
-            --text-main: #f5f5f5;      /* Texto principal */
-            --text-muted: #c5a1ff;     /* Texto secundario / Info */
-            --accent: #00ffcc;         /* Verde neón/Cian estilo videojuego */
-            --border-glow: #1a1a24;    /* Borde sutil */
+            --bg-color: #0b0c10;       
+            --card-bg: #1f2833;        
+            --text-main: #f5f5f5;      
+            --text-muted: #c5a1ff;     
+            --accent: #00ffcc;         
+            --border-glow: #1a1a24;    
         }
 
         /* --- ESTILOS GENERALES --- */
@@ -34,7 +34,7 @@
             align-items: center;
         }
 
-        /* --- ENCABEZADO DE LA PÁGINA --- */
+        /* --- ENCABEZADO --- */
         header {
             width: 100%;
             max-width: 900px;
@@ -60,7 +60,6 @@
             margin-bottom: 15px;
         }
 
-        /* Redes en el Header */
         header .header-socials {
             display: flex;
             justify-content: center;
@@ -74,10 +73,10 @@
             max-width: 900px;
             display: flex;
             flex-direction: column;
-            gap: 50px; /* Espacio entre proyectos */
+            gap: 50px; 
         }
 
-        /* --- ESTRUCTURA DE CADA PROYECTO (Loop) --- */
+        /* --- TARJETAS DE PROYECTO --- */
         .project-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-glow);
@@ -87,13 +86,11 @@
             transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
-        /* Efecto hover sutil estilo juego */
         .project-card:hover {
             transform: translateY(-5px);
             border-color: var(--accent);
         }
 
-        /* #TITULO */
         .project-title {
             font-size: 1.8rem;
             font-weight: 700;
@@ -105,7 +102,6 @@
             padding-left: 15px;
         }
 
-        /* #INFO */
         .project-info {
             font-size: 1rem;
             color: var(--text-muted);
@@ -114,7 +110,6 @@
             text-align: justify;
         }
 
-        /* #FOTO / VIDEO */
         .project-media {
             width: 100%;
             border-radius: 6px;
@@ -123,7 +118,6 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Ajuste para que las imágenes y videos sean responsivos */
         .project-media img, 
         .project-media video {
             width: 100%;
@@ -132,7 +126,6 @@
             object-fit: cover;
         }
 
-        /* Cursor de lupa sobre las imágenes para indicar que son clickeables */
         .project-media img {
             cursor: zoom-in;
             transition: opacity 0.3s ease;
@@ -142,7 +135,7 @@
             opacity: 0.9;
         }
 
-        /* --- SECCIÓN CONTACTO / FORMULARIO --- */
+        /* --- SECCIÓN CONTACTO --- */
         .contact-section {
             width: 100%;
             max-width: 900px;
@@ -224,7 +217,7 @@
             box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
         }
 
-        /* --- PIE DE PÁGINA (ESTILOS NUEVOS) --- */
+        /* --- FOOTER --- */
         footer {
             margin-top: 80px;
             padding: 30px 20px;
@@ -263,14 +256,14 @@
             text-align: center;
         }
 
-        /* --- ESTILOS DE LA VENTANA OSCURA (LIGHTBOX) --- */
+        /* --- LIGHTBOX (VENTANA OSCURA) --- */
         .lightbox-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(11, 12, 16, 0.9); /* Fondo oscuro translúcido */
+            background-color: rgba(11, 12, 16, 0.9); 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -309,201 +302,49 @@
         <p>Matías Rodríguez</p>
         
         <div class="header-socials social-links">
-            <a href="https://www.linkedin.com/in/matias-rodriguez-2908a0262/" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="social-icon" 
-               title="LinkedIn">
+            <a href="https://www.linkedin.com/in/matias-rodriguez-2908a0262/" target="_blank" rel="noopener noreferrer" class="social-icon" title="LinkedIn">
                 <i class="fa-brands fa-linkedin-in"></i>
             </a>
-
-            <a href="https://x.com/Bluegamer89" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="social-icon" 
-               title="Twitter / X">
+            <a href="https://x.com/Bluegamer89" target="_blank" rel="noopener noreferrer" class="social-icon" title="Twitter / X">
                 <i class="fa-brands fa-x-twitter"></i>
             </a>
-
-            <a href="https://www.instagram.com/matichi._89?igsh=MXhzNWh3OTk0dHB5aQ==" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="social-icon" 
-               title="Instagram">
+            <a href="https://www.instagram.com/matichi._89?igsh=MXhzNWh3OTk0dHB5aQ==" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram">
                 <i class="fa-brands fa-instagram"></i>
             </a>
         </div>
     </header>
 
-    <main class="portfolio-container">
+    <main class="portfolio-container" id="projects-wrapper">
+        </main>
 
-        <article class="project-card">
-            <h2 class="project-title">Escena en fase spline / Proyecto de animacion</h2>
-            <div class="project-info">
-                proceso de pasar de Blocking a Spline de una escena para un proyecto de animacion
+    <section class="contact-section">
+        <h2>Solicitud de Trabajo / Cotización</h2>
+        <form class="contact-form" action="https://formspree.io/f/mjgzpjjn" method="POST">
+            <div class="form-group">
+                <label for="email">Tu Correo Electrónico</label>
+                <input type="email" id="email" name="_replyto" placeholder="ejemplo@correo.com" required>
             </div>
-            <div class="project-media">
-                <video controls loop muted poster="miniatura-video.jpg">
-                    <source src="caidaFinal0001-0055.mp4" type="video/mp4">
-                    Tu navegador no soporta el formato de video.
-                </video>
+            <div class="form-group">
+                <label for="budget">Presupuesto Estimado (USD / CLP)</label>
+                <input type="text" id="budget" name="presupuesto" placeholder="Ej: $500 USD o Detalles del presupuesto">
             </div>
-        </article>
-
-         <article class="project-card">
-            <h2 class="project-title">Teaser Trailer soon Horror game</h2>
-            <div class="project-info">
-                teaser trailer de videojuego Fan game estilo mascota de horror en el q soy parte, en el cual se presentan trabajos mios, como personajes, props e ideas
+            <div class="form-group">
+                <label for="message">Detalles del Mensaje / Encargo</label>
+                <textarea id="message" name="mensaje" rows="5" placeholder="Describe el encargo. Si tienes imágenes de referencia, puedes pegar aquí sus enlaces (Imgur, Google Drive, Discord, etc.)..." required></textarea>
             </div>
-            <div class="project-media">
-                <video controls loop muted poster="miniatura-video.jpg">
-                    <source src="Chaos At Fazbear's MVP Trailer.mp4" type="video/mp4">
-                    Tu navegador no soporta el formato de video.
-                </video>
-            </div>
-        </article>
-
-        <article class="project-card">
-            <h2 class="project-title">Teaser Trailer 2 Soon Game</h2>
-            <div class="project-info">
-                teaser trailer de videojuego Fan game estilo mascota de horror en el q soy parte, en el cual se presentan trabajos mios, como personajes, props e ideas
-            </div>
-            <div class="project-media">
-                <video controls loop muted poster="miniatura-video.jpg">
-                    <source src="trailer_beta.mp4" type="video/mp4">
-                    Tu navegador no soporta el formato de video.
-                </video>
-            </div>
-        </article>
-
-        <article class="project-card">
-            <h2 class="project-title">Prueba de modelado, personaje Robot</h2>
-            <div class="project-info">
-                trabajo de testeo de modelado, en este caso un personaje robot de chicle.
-            </div>
-            <div class="project-media">
-                <img src="PersonajeChicle.png" alt="Descripción del Proyecto Beta">
-            </div>
-        </article>
-
-        <article class="project-card">
-            <h2 class="project-title">[prueba de ambientacion]</h2>
-            <div class="project-info">
-                [obra creada para mostrar la agilidad en perspectica orthografica, iluminacion y ambientacion]
-            </div>
-            <div class="project-media">
-                <img src="Escenario1.png" alt="Descripción de la obra">
-            </div>
-        </article>
-
-        <article class="project-card">
-            <h2 class="project-title">[prueba de ambientacion en UnrealEngine]</h2>
-            <div class="project-info">
-                [obra creada para mostrar la agilidad en iluminacion y ambientacion dentro de otros motores como UnrealEngine5]
-            </div>
-            <div class="project-media">
-                <img src="Ambientacion2.png" alt="Descripción de la obra">
-            </div>
-        </article>
-
-        <article class="project-card">
-            <h2 class="project-title">[Mascot Horror Test]</h2>
-            <div class="project-info">
-                [obra creada para mostrar mis agilidad con el modelado en el mundo actual de los video juegos de mascotas de horror]
-            </div>
-            <div class="project-media">
-                <img src="pia.png" alt="Descripción de la obra">
-            </div>
-        </article>
-
-          <article class="project-card">
-            <h2 class="project-title">[Mascot Horror Test]</h2>
-            <div class="project-info">
-                [obra creada para mostrar mis agilidad con el modelado en el mundo actual de los video juegos de mascotas de horror 2]
-            </div>
-            <div class="project-media">
-                <img src="Mascothorror1.png" alt="Descripción de la obra">
-            </div>
-        </article>
-
-        <article class="project-card">
-            <h2 class="project-title">[RIGG_01]</h2>
-            <div class="project-info">
-                [obra creada para mostrar mis agilidad con el Riggin]
-            </div>
-            <div class="project-media">
-                <img src="Rigg.png" alt="Descripción de la obra">
-            </div>
-        </article>
-
-        <article class="project-card">
-            <h2 class="project-title">[RIGG_02]</h2>
-            <div class="project-info">
-                [obra creada para mostrar mis agilidad con el Riggin]
-            </div>
-            <div class="project-media">
-                <img src="RiggVideojuegos.png" alt="Descripción de la obra">
-            </div>
-        </article>
-
-         <article class="project-card">
-            <h2 class="project-title">[DiseñoPersonajes]</h2>
-            <div class="project-info">
-                [obra creada para mostrar mis agilidad con el Diseño de personajes de horror]
-            </div>
-            <div class="project-media">
-                <img src="DiseñoPersonaje.png" alt="Descripción de la obra">
-            </div>
-        </article>
-
-        <section class="contact-section">
-            <h2>Solicitud de Trabajo / Cotización</h2>
-            <form class="contact-form" action="https://formspree.io/f/mjgzpjjn" method="POST">
-                
-                <div class="form-group">
-                    <label for="email">Tu Correo Electrónico</label>
-                    <input type="email" id="email" name="_replyto" placeholder="ejemplo@correo.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="budget">Presupuesto Estimado (USD / CLP)</label>
-                    <input type="text" id="budget" name="presupuesto" placeholder="Ej: $500 USD o Detalles del presupuesto">
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Detalles del Mensaje / Encargo</label>
-                    <textarea id="message" name="mensaje" rows="5" placeholder="Describe el encargo. Si tienes imágenes de referencia, puedes pegar aquí sus enlaces (Imgur, Google Drive, Discord, etc.)..." required></textarea>
-                </div>
-
-                <button type="submit" class="submit-btn">Enviar Solicitud</button>
-            </form>
-        </section>
-
-    </main>
+            <button type="submit" class="submit-btn">Enviar Solicitud</button>
+        </form>
+    </section>
 
     <footer>
         <div class="social-links">
-            <a href="https://www.linkedin.com/in/matias-rodriguez-2908a0262/" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="social-icon" 
-               title="LinkedIn">
+            <a href="https://www.linkedin.com/in/matias-rodriguez-2908a0262/" target="_blank" rel="noopener noreferrer" class="social-icon" title="LinkedIn">
                 <i class="fa-brands fa-linkedin-in"></i>
             </a>
-
-            <a href="https://x.com/Bluegamer89" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="social-icon" 
-               title="Twitter / X">
+            <a href="https://x.com/Bluegamer89" target="_blank" rel="noopener noreferrer" class="social-icon" title="Twitter / X">
                 <i class="fa-brands fa-x-twitter"></i>
             </a>
-
-            <a href="https://www.instagram.com/matichi._89?igsh=MXhzNWh3OTk0dHB5aQ==" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="social-icon" 
-               title="Instagram">
+            <a href="https://www.instagram.com/matichi._89?igsh=MXhzNWh3OTk0dHB5aQ==" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram">
                 <i class="fa-brands fa-instagram"></i>
             </a>
         </div>
@@ -515,23 +356,56 @@
     </div>
 
     <script>
+        const wrapper = document.getElementById('projects-wrapper');
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = lightbox.querySelector('img');
-        const images = document.querySelectorAll('.project-media img');
 
-        // Abrir el lightbox al hacer click en cualquier imagen del portafolio
-        images.forEach(img => {
-            img.addEventListener('click', () => {
-                lightboxImg.src = img.src;
-                lightboxImg.alt = img.alt;
-                lightbox.classList.add('active');
-            });
-        });
+        // 1. Cargar datos del archivo proyectos.json
+        fetch('proyectos.json')
+            .then(response => response.json())
+            .then(proyectos => {
+                // Renderizar cada proyecto en el HTML
+                proyectos.forEach(proy => {
+                    const card = document.createElement('article');
+                    card.className = 'project-card';
 
-        // Cerrar el lightbox al hacer click en cualquier parte del fondo oscuro
+                    let mediaHtml = '';
+                    if (proy.tipo === 'video') {
+                        mediaHtml = `
+                            <video controls loop muted>
+                                <source src="${proy.archivo}" type="video/mp4">
+                                Tu navegador no soporta el formato de video.
+                            </video>
+                        `;
+                    } else {
+                        mediaHtml = `<img src="${proy.archivo}" alt="${proy.titulo}">`;
+                    }
+
+                    card.innerHTML = `
+                        <h2 class="project-title">${proy.titulo}</h2>
+                        <div class="project-info">${proy.info}</div>
+                        <div class="project-media">${mediaHtml}</div>
+                    `;
+
+                    wrapper.appendChild(card);
+                });
+
+                // 2. Activar el Lightbox para las imágenes recién creadas
+                const images = document.querySelectorAll('.project-media img');
+                images.forEach(img => {
+                    img.addEventListener('click', () => {
+                        lightboxImg.src = img.src;
+                        lightboxImg.alt = img.alt;
+                        lightbox.classList.add('active');
+                    });
+                });
+            })
+            .catch(error => console.error('Error cargando los proyectos:', error));
+
+        // 3. Cerrar el lightbox al hacer click fuera
         lightbox.addEventListener('click', () => {
             lightbox.classList.remove('active');
-            setTimeout(() => { lightboxImg.src = ''; }, 300); // Limpia la ruta tras la animación
+            setTimeout(() => { lightboxImg.src = ''; }, 300);
         });
     </script>
 
