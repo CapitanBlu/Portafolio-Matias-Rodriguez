@@ -44,6 +44,7 @@
             padding-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
+            position: relative;
         }
 
         header h1 {
@@ -56,6 +57,15 @@
             color: var(--accent);
             font-size: 0.9rem;
             margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* Redes en el Header */
+        header .header-socials {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
         }
 
         /* --- CONTENEDOR PRINCIPAL --- */
@@ -122,6 +132,105 @@
             object-fit: cover;
         }
 
+        /* Cursor de lupa sobre las imágenes para indicar que son clickeables */
+        .project-media img {
+            cursor: zoom-in;
+            transition: opacity 0.3s ease;
+        }
+        
+        .project-media img:hover {
+            opacity: 0.9;
+        }
+
+        /* --- SECCIÓN CONTACTO / FORMULARIO --- */
+        .contact-section {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 60px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .contact-section h2 {
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            background-color: #0b0c10;
+            border: 1px solid var(--border-glow);
+            border-radius: 4px;
+            padding: 12px;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Personalización del input de archivo */
+        .contact-form input[type="file"] {
+            color: var(--text-main);
+            font-size: 0.9rem;
+            padding: 5px 0;
+        }
+
+        .submit-btn {
+            background-color: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            align-self: flex-start;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--accent);
+            color: #0b0c10;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+        }
+
         /* --- PIE DE PÁGINA (ESTILOS NUEVOS) --- */
         footer {
             margin-top: 80px;
@@ -160,6 +269,44 @@
             letter-spacing: 1px;
             text-align: center;
         }
+
+        /* --- ESTILOS DE LA VENTANA OSCURA (LIGHTBOX) --- */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(11, 12, 16, 0.9); /* Fondo oscuro translúcido */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            cursor: zoom-out;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-overlay img {
+            max-width: 90%;
+            max-height: 85%;
+            object-fit: contain;
+            border-radius: 6px;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-overlay.active img {
+            transform: scale(1);
+        }
     </style>
 </head>
 <body>
@@ -167,6 +314,32 @@
     <header>
         <h1>Portafolio</h1>
         <p>Matías Rodríguez</p>
+        
+        <div class="header-socials social-links">
+            <a href="https://www.linkedin.com/in/matias-rodriguez-2908a0262/" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="social-icon" 
+               title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+
+            <a href="https://x.com/Bluegamer89" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="social-icon" 
+               title="Twitter / X">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+            <a href="https://www.instagram.com/matichi._89?igsh=MXhzNWh3OTk0dHB5aQ==" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="social-icon" 
+               title="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+        </div>
     </header>
 
     <main class="portfolio-container">
@@ -290,6 +463,34 @@
             </div>
         </article>
 
+        <section class="contact-section">
+            <h2>Solicitud de Trabajo / Cotización</h2>
+            <form class="contact-form" action="https://formspree.io/f/matiazafrada@gmail.com" method="POST" enctype="multipart/form-data">
+                
+                <div class="form-group">
+                    <label for="email">Tu Correo Electrónico</label>
+                    <input type="email" id="email" name="_replyto" placeholder="ejemplo@correo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="budget">Presupuesto Estimado (USD / CLP)</label>
+                    <input type="text" id="budget" name="presupuesto" placeholder="Ej: $500 USD o Detalles del presupuesto">
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Detalles del Mensaje / Encargo</label>
+                    <textarea id="message" name="mensaje" rows="5" placeholder="Describe los modelos, animaciones o tipo de proyecto que necesitas..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="file">Adjuntar Imágenes de Referencia / Archivos</label>
+                    <input type="file" id="file" name="archivo_adjunto" accept="image/*, .zip, .rar, .pdf">
+                </div>
+
+                <button type="submit" class="submit-btn">Enviar Solicitud</button>
+            </form>
+        </section>
+
     </main>
 
     <footer>
@@ -320,6 +521,31 @@
         </div>
         <p class="footer-text">© 2026 // Portafolio Matias Rodriguez</p>
     </footer>
+
+    <div class="lightbox-overlay" id="lightbox">
+        <img src="" alt="Vista ampliada">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+        const images = document.querySelectorAll('.project-media img');
+
+        // Abrir el lightbox al hacer click en cualquier imagen del portafolio
+        images.forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');
+            });
+        });
+
+        // Cerrar el lightbox al hacer click en cualquier parte del fondo oscuro
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            setTimeout(() => { lightboxImg.src = ''; }, 300); // Limpia la ruta tras la animación
+        });
+    </script>
 
 </body>
 </html>
