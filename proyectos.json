@@ -1,0 +1,68 @@
+[
+    {
+        "titulo": "Escena en fase spline / Proyecto de animacion",
+        "info": "proceso de pasar de Blocking a Spline de una escena para un proyecto de animacion",
+        "tipo": "video",
+        "archivo": "caidaFinal0001-0055.mp4"
+    },
+    {
+        "titulo": "Teaser Trailer soon Horror game",
+        "info": "teaser trailer de videojuego Fan game estilo mascota de horror en el q soy parte, en el cual se presentan trabajos mios, como personajes, props e ideas",
+        "tipo": "video",
+        "archivo": "Chaos At Fazbear's MVP Trailer.mp4"
+    },
+    {
+        "titulo": "Teaser Trailer 2 Soon Game",
+        "info": "teaser trailer de videojuego Fan game estilo mascota de horror en el q soy parte, en el cual se presentan trabajos mios, como personajes, props e ideas",
+        "tipo": "video",
+        "archivo": "trailer_beta.mp4"
+    },
+    {
+        "titulo": "Prueba de modelado, personaje Robot",
+        "info": "trabajo de testeo de modelado, en este caso un personaje robot de chicle.",
+        "tipo": "imagen",
+        "archivo": "PersonajeChicle.png"
+    },
+    {
+        "titulo": "[prueba de ambientacion]",
+        "info": "[obra creada para mostrar la agilidad en perspectica orthografica, iluminacion y ambientacion]",
+        "tipo": "imagen",
+        "archivo": "Escenario1.png"
+    },
+    {
+        "titulo": "[prueba de ambientacion en UnrealEngine]",
+        "info": "[obra creada para mostrar la agilidad en iluminacion y ambientacion dentro de otros motores como UnrealEngine5]",
+        "tipo": "imagen",
+        "archivo": "Ambientacion2.png"
+    },
+    {
+        "titulo": "[Mascot Horror Test]",
+        "info": "[obra creada para mostrar mis agilidad con el modelado en el mundo actual de los video juegos de mascotas de horror]",
+        "tipo": "imagen",
+        "archivo": "pia.png"
+    },
+    {
+        "titulo": "[Mascot Horror Test]",
+        "info": "[obra creada para mostrar mis agilidad con el modelado en el mundo actual de los video juegos de mascotas de horror 2]",
+        "tipo": "imagen",
+        "archivo": "Mascothorror1.png"
+    },
+    {
+        "titulo": "[RIGG_01]",
+        "info": "[obra creada para mostrar mis agilidad con el Riggin]",
+        "tipo": "imagen",
+        "archivo": "Rigg.png"
+    },
+    {
+        "titulo": "[RIGG_02]",
+        "info": "[obra creada para mostrar mis agilidad con el Riggin]",
+        "tipo": "imagen",
+        "archivo": "RiggVideojuegos.png"
+    },
+    {
+        "titulo": "[DiseñoPersonajes]",
+        "info": "[obra creada para mostrar mis agilidad con el Diseño de personajes de horror]",
+        "tipo": "imagen",
+        "archivo": "DiseñoPersonaje.png"
+    }
+]
