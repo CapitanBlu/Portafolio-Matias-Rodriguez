@@ -411,6 +411,12 @@
             <a href="https://www.instagram.com/matichi._89?igsh=MXhzNWh3OTk0dHB5aQ==" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram">
                 <i class="fa-brands fa-instagram"></i>
             </a>
+            <a href="https://www.youtube.com/@CapitanBlue89" target="_blank" rel="noopener noreferrer" class="social-icon" title="YouTube">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+            <a href="#" class="social-icon" title="Discord: capitanblue89" onclick="return false;" style="cursor: default;">
+                <i class="fa-brands fa-discord"></i>
+            </a>
         </div>
 
         <div class="stats-wrapper">
@@ -462,6 +468,12 @@
             <a href="https://www.instagram.com/matichi._89?igsh=MXhzNWh3OTk0dHB5aQ==" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram">
                 <i class="fa-brands fa-instagram"></i>
             </a>
+            <a href="https://www.youtube.com/@CapitanBlue89" target="_blank" rel="noopener noreferrer" class="social-icon" title="YouTube">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+            <a href="#" class="social-icon" title="Discord: capitanblue89" onclick="return false;" style="cursor: default;">
+                <i class="fa-brands fa-discord"></i>
+            </a>
         </div>
         <p class="footer-text">© 2026 // Portafolio Matias Rodriguez</p>
     </footer>
@@ -481,7 +493,6 @@
         const FIREBASE_DB_URL = "https://likes-portafolio-default-rtdb.firebaseio.com";
         const totalLikesMap = {};
 
-        // Generar un ID único aleatorio para la sesión de este usuario
         const sessionUserId = "user_" + Math.random().toString(36).substring(2, 11);
 
         function updateGlobalCounter() {
@@ -492,9 +503,7 @@
             globalCounterEl.innerText = sum;
         }
 
-        // --- NUEVO SISTEMA DE PRESENCIA POR TIEMPO ---
         function initTrafficStats() {
-            // 1. Contador de Visitas Totales
             if (!sessionStorage.getItem('counted_visit')) {
                 fetch(`${FIREBASE_DB_URL}/stats/views.json`)
                     .then(res => res.json())
@@ -514,7 +523,6 @@
                     .then(views => { globalViewsEl.innerText = views || 0; });
             }
 
-            // 2. Reportar latido de actividad (Señal de vida a Firebase con la hora actual)
             function sendHeartbeat() {
                 fetch(`${FIREBASE_DB_URL}/online/${sessionUserId}.json`, {
                     method: 'PUT',
@@ -522,11 +530,9 @@
                 });
             }
 
-            // Enviar primera señal de vida de inmediato y luego actualizar cada 4 segundos
             sendHeartbeat();
             setInterval(sendHeartbeat, 4000);
 
-            // 3. Revisar la lista general y limpiar usuarios fantasmas viejos
             function processOnlineUsers() {
                 fetch(`${FIREBASE_DB_URL}/online.json`)
                     .then(res => res.json())
@@ -539,11 +545,8 @@
                         const now = Date.now();
                         let activeCount = 0;
 
-                        // Analizar el tiempo de cada usuario registrado
                         Object.keys(onlineUsers).forEach(userId => {
                             const lastActiveTime = onlineUsers[userId];
-                            
-                            // Si el usuario no ha dado señales en los últimos 10 segundos, se borra por inactivo
                             if (now - lastActiveTime > 10000) {
                                 fetch(`${FIREBASE_DB_URL}/online/${userId}.json`, { method: 'DELETE' });
                             } else {
@@ -551,18 +554,15 @@
                             }
                         });
 
-                        // Pintar en pantalla el total real (asegurando un mínimo de 1)
                         liveOnlineEl.innerText = activeCount > 0 ? activeCount : 1;
                     })
                     .catch(() => { liveOnlineEl.innerText = 1; });
             }
 
-            // Ejecutar la limpieza general cada 4 segundos de forma cíclica
             setInterval(processOnlineUsers, 4000);
             processOnlineUsers();
         }
 
-        // Cargar proyectos desde proyectos.json
         fetch('proyectos.json')
             .then(response => response.json())
             .then(proyectos => {
@@ -600,7 +600,6 @@
 
                     wrapper.appendChild(card);
 
-                    // Consultar likes de cada obra en Firebase
                     fetch(`${FIREBASE_DB_URL}/likes/${projectKey}.json`)
                         .then(res => res.json())
                         .then(value => {
@@ -613,7 +612,6 @@
                             totalLikesMap[projectKey] = 0;
                         });
 
-                    // Botón de dar / quitar likes
                     const likeBtn = card.querySelector('.like-btn');
                     likeBtn.addEventListener('click', () => {
                         const isLiked = likeBtn.classList.contains('liked');
@@ -644,7 +642,6 @@
                     });
                 });
 
-                // Activar Lightbox
                 const images = document.querySelectorAll('.project-media img');
                 images.forEach(img => {
                     img.addEventListener('click', () => {
@@ -654,7 +651,6 @@
                     });
                 });
 
-                // Inicializar estadísticas de tráfico al cargar todo
                 initTrafficStats();
             })
             .catch(error => console.error('Error cargando los proyectos:', error));
