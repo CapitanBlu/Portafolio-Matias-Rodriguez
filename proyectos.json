@@ -64,5 +64,11 @@
         "info": "[obra creada para mostrar mis agilidad con el Diseño de personajes de horror]",
         "tipo": "imagen",
         "archivo": "DiseñoPersonaje.png"
-    }
+    },
+    {
+        "titulo": "Nuevo Modelo Animatrónico 2026",
+        "info": "Modelado de prueba completado en Blender utilizando texturas custom.",
+        "tipo": "imagen",
+        "archivo": "Captura de pantalla 2026-02-25 104240.png"
+    },
 ]
