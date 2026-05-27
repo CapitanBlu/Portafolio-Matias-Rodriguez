@@ -68,6 +68,40 @@
             justify-content: center;
             gap: 20px;
             margin-top: 10px;
+            margin-bottom: 20px; 
+        }
+
+        /* --- BOTONES DE CV --- */
+        .cv-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .cv-btn {
+            background: rgba(0, 255, 204, 0.03);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            color: var(--text-main);
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .cv-btn:hover {
+            border-color: var(--accent);
+            background: rgba(0, 255, 204, 0.1);
+            color: var(--accent);
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
+            transform: translateY(-2px);
         }
 
         /* Contenedor de Estadísticas en el Header */
@@ -416,6 +450,15 @@
             </a>
             <a href="#" class="social-icon" title="Discord: capitanblue89" onclick="return false;" style="cursor: default;">
                 <i class="fa-brands fa-discord"></i>
+            </a>
+        </div>
+
+        <div class="cv-container">
+            <a href="Matías_R_CV_Español.pdf" target="_blank" rel="noopener noreferrer" class="cv-btn" title="Ver CV en Español">
+                <i class="fa-solid fa-file-pdf"></i> CV (Español)
+            </a>
+            <a href="CV_Matias_Rodriguez_EN.pdf" target="_blank" rel="noopener noreferrer" class="cv-btn" title="View CV in English">
+                <i class="fa-solid fa-file-pdf"></i> CV (English)
             </a>
         </div>
 
