@@ -68,52 +68,19 @@
             justify-content: center;
             gap: 20px;
             margin-top: 10px;
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
         }
 
-        /* --- BOTONES DE CV --- */
-        .cv-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .cv-btn {
-            background: rgba(0, 255, 204, 0.03);
-            border: 1px solid rgba(0, 255, 204, 0.3);
-            color: var(--text-main);
-            padding: 8px 16px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-decoration: none;
-            border-radius: 4px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-        }
-
-        .cv-btn:hover {
-            border-color: var(--accent);
-            background: rgba(0, 255, 204, 0.1);
-            color: var(--accent);
-            box-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* Contenedor de Estadísticas en el Header */
-        .stats-wrapper {
+        /* --- CONTENEDORES DE CÁPSULAS (CV y Stats) --- */
+        .header-capsules-container {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             gap: 15px;
-            margin-top: 20px;
+            margin-bottom: 15px;
         }
 
-        .stat-box {
+        .capsule-box {
             font-size: 0.8rem;
             color: var(--text-main);
             padding: 6px 14px;
@@ -123,30 +90,47 @@
             gap: 8px;
             letter-spacing: 1px;
             font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
 
-        .box-likes {
+        /* Estilos específicos basados en tus contadores neón */
+        .capsule-likes, .capsule-cv-es {
             background: rgba(255, 51, 102, 0.08);
             border: 1px solid var(--like-color);
             box-shadow: 0 0 10px rgba(255, 51, 102, 0.15);
         }
-        .box-likes i { color: var(--like-color); }
+        .capsule-likes i, .capsule-cv-es i { color: var(--like-color); }
 
-        .box-views {
+        .capsule-views, .capsule-cv-en {
             background: rgba(0, 188, 255, 0.08);
             border: 1px solid var(--views-color);
             box-shadow: 0 0 10px rgba(0, 188, 255, 0.15);
         }
-        .box-views i { color: var(--views-color); }
+        .capsule-views i, .capsule-cv-en i { color: var(--views-color); }
 
-        .box-online {
+        .capsule-online {
             background: rgba(0, 255, 102, 0.08);
             border: 1px solid var(--online-color);
             box-shadow: 0 0 10px rgba(0, 255, 102, 0.15);
         }
-        .box-online i { 
+        .capsule-online i { 
             color: var(--online-color); 
             animation: pulse 1.8s infinite ease-in-out;
+        }
+
+        /* Efecto Hover interactivo solo para los botones de CV */
+        .cv-link:hover {
+            transform: translateY(-2px);
+        }
+        .capsule-cv-es:hover {
+            background: rgba(255, 51, 102, 0.18);
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.4);
+        }
+        .capsule-cv-en:hover {
+            background: rgba(0, 188, 255, 0.18);
+            box-shadow: 0 0 15px rgba(0, 188, 255, 0.4);
         }
 
         @keyframes pulse {
@@ -456,25 +440,25 @@
             </a>
         </div>
 
-        <div class="cv-container">
-            <a href="Matías_R_CV_Español.pdf" target="_blank" rel="noopener noreferrer" class="cv-btn" title="Ver CV en Español">
+        <div class="header-capsules-container">
+            <a href="Matías_R_CV_Español.pdf" target="_blank" rel="noopener noreferrer" class="capsule-box capsule-cv-es cv-link" title="Ver CV en Español">
                 <i class="fa-solid fa-file-pdf"></i> CV (Español)
             </a>
-            <a href="English_Matias_Rodriguez-CV.pdf" target="_blank" rel="noopener noreferrer" class="cv-btn" title="View CV in English">
+            <a href="English_Matias_Rodriguez-CV.pdf" target="_blank" rel="noopener noreferrer" class="capsule-box capsule-cv-en cv-link" title="View CV in English">
                 <i class="fa-solid fa-file-pdf"></i> CV (English)
             </a>
         </div>
 
-        <div class="stats-wrapper">
-            <div class="stat-box box-likes">
+        <div class="header-capsules-container">
+            <div class="capsule-box capsule-likes">
                 <i class="fa-solid fa-heart"></i>
                 <span>Likes: <strong id="global-likes-counter">0</strong></span>
             </div>
-            <div class="stat-box box-views">
+            <div class="capsule-box capsule-views">
                 <i class="fa-solid fa-eye"></i>
                 <span>Visitas: <strong id="global-views-counter">0</strong></span>
             </div>
-            <div class="stat-box box-online">
+            <div class="capsule-box capsule-online">
                 <i class="fa-solid fa-circle"></i>
                 <span>En vivo: <strong id="live-online-counter">1</strong></span>
             </div>
