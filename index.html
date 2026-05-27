@@ -15,8 +15,8 @@
             --accent: #00ffcc;         
             --border-glow: #1a1a24;    
             --like-color: #ff3366;     
-            --online-color: #00ff66;   /* Verde neón para el en vivo */
-            --views-color: #00bcff;    /* Azul para las visitas */
+            --online-color: #00ff66;   
+            --views-color: #00bcff;    
         }
 
         /* --- ESTILOS GENERALES --- */
@@ -91,7 +91,6 @@
             font-weight: bold;
         }
 
-        /* Caja Likes */
         .box-likes {
             background: rgba(255, 51, 102, 0.08);
             border: 1px solid var(--like-color);
@@ -99,7 +98,6 @@
         }
         .box-likes i { color: var(--like-color); }
 
-        /* Caja Visitas */
         .box-views {
             background: rgba(0, 188, 255, 0.08);
             border: 1px solid var(--views-color);
@@ -107,7 +105,6 @@
         }
         .box-views i { color: var(--views-color); }
 
-        /* Caja En Vivo */
         .box-online {
             background: rgba(0, 255, 102, 0.08);
             border: 1px solid var(--online-color);
@@ -359,7 +356,7 @@
             text-align: center;
         }
 
-        /* --- LIGHTBOX (VENTANA OSCURA) --- */
+        /* --- LIGHTBOX --- */
         .lightbox-overlay {
             position: fixed;
             top: 0;
@@ -484,7 +481,7 @@
         const FIREBASE_DB_URL = "https://likes-portafolio-default-rtdb.firebaseio.com";
         const totalLikesMap = {};
 
-        // Generar un ID único aleatorio para la sesión de este usuario en vivo
+        // Generar un ID único aleatorio para la sesión de este usuario
         const sessionUserId = "user_" + Math.random().toString(36).substring(2, 11);
 
         function updateGlobalCounter() {
@@ -495,9 +492,9 @@
             globalCounterEl.innerText = sum;
         }
 
-        // --- SISTEMA DE VISITAS Y USUARIOS EN VIVO ---
+        // --- NUEVO SISTEMA DE PRESENCIA POR TIEMPO ---
         function initTrafficStats() {
-            // 1. Contador de Visitas Totales (Evita duplicar al recargar usando sessionStorage)
+            // 1. Contador de Visitas Totales
             if (!sessionStorage.getItem('counted_visit')) {
                 fetch(`${FIREBASE_DB_URL}/stats/views.json`)
                     .then(res => res.json())
@@ -517,30 +514,52 @@
                     .then(views => { globalViewsEl.innerText = views || 0; });
             }
 
-            // 2. Contador de Usuarios en Vivo
-            // Registrar presencia actual
-            fetch(`${FIREBASE_DB_URL}/online/${sessionUserId}.json`, {
-                method: 'PUT',
-                body: JSON.stringify(true)
-            });
+            // 2. Reportar latido de actividad (Señal de vida a Firebase con la hora actual)
+            function sendHeartbeat() {
+                fetch(`${FIREBASE_DB_URL}/online/${sessionUserId}.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(Date.now())
+                });
+            }
 
-            // Consultar cuántos usuarios en vivo hay (revisa cada 4 segundos para actualizar dinámicamente)
-            function updateOnlineCount() {
+            // Enviar primera señal de vida de inmediato y luego actualizar cada 4 segundos
+            sendHeartbeat();
+            setInterval(sendHeartbeat, 4000);
+
+            // 3. Revisar la lista general y limpiar usuarios fantasmas viejos
+            function processOnlineUsers() {
                 fetch(`${FIREBASE_DB_URL}/online.json`)
                     .then(res => res.json())
                     .then(onlineUsers => {
-                        let totalOnline = onlineUsers ? Object.keys(onlineUsers).length : 1;
-                        liveOnlineEl.innerText = totalOnline;
-                    }).catch(() => { liveOnlineEl.innerText = 1; });
-            }
-            
-            updateOnlineCount();
-            setInterval(updateOnlineCount, 4000);
+                        if (!onlineUsers) {
+                            liveOnlineEl.innerText = 1;
+                            return;
+                        }
 
-            // Borrar registro de presencia cuando el usuario cierra o recarga la página
-            window.addEventListener('beforeunload', () => {
-                navigator.sendBeacon(`${FIREBASE_DB_URL}/online/${sessionUserId}.json`, JSON.stringify(null));
-            });
+                        const now = Date.now();
+                        let activeCount = 0;
+
+                        // Analizar el tiempo de cada usuario registrado
+                        Object.keys(onlineUsers).forEach(userId => {
+                            const lastActiveTime = onlineUsers[userId];
+                            
+                            // Si el usuario no ha dado señales en los últimos 10 segundos, se borra por inactivo
+                            if (now - lastActiveTime > 10000) {
+                                fetch(`${FIREBASE_DB_URL}/online/${userId}.json`, { method: 'DELETE' });
+                            } else {
+                                activeCount++;
+                            }
+                        });
+
+                        // Pintar en pantalla el total real (asegurando un mínimo de 1)
+                        liveOnlineEl.innerText = activeCount > 0 ? activeCount : 1;
+                    })
+                    .catch(() => { liveOnlineEl.innerText = 1; });
+            }
+
+            // Ejecutar la limpieza general cada 4 segundos de forma cíclica
+            setInterval(processOnlineUsers, 4000);
+            processOnlineUsers();
         }
 
         // Cargar proyectos desde proyectos.json
