@@ -23,6 +23,12 @@
         "tipo": "imagen",
         "archivo": "PersonajeChicle.png"
     },
+     {
+        "titulo": "Prueba de modelado, personaje Robot",
+        "info": "trabajo de testeo de modelado, en este caso un personaje robot de chicle.",
+        "tipo": "imagen",
+        "archivo": "Ribbit_Model.png"
+    },
     {
         "titulo": "Prueba de modelado,Dinosaurio Zbrush",
         "info": "trabajo de testeo de modelado, en este caso un Dinosaurio Sculpido en Zbrush.",
